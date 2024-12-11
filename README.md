@@ -37,6 +37,7 @@ dsa-project/
 │   │   └── Main.java
 ├── README.md
 └── .gitignore
+```
 
 ---
 
@@ -56,7 +57,8 @@ Ensure you have the following installed on your system:
 Use Git to clone the project repository:
 ```bash
 git clone git@github.com:ahmedbahy2026/DSA-Project.git
-cd DSA-Project```
+cd DSA-Project
+```
 
 #### **Step 2: Recreate Ignored Files and Directories**
 Certain files and directories are ignored by .gitignore (e.g., compiled .class files, IDE configurations). Here’s how to restore them:
@@ -76,3 +78,30 @@ javac -d bin src/main/**/*.java
 - IntelliJ IDEA:
     - Open the project folder in IntelliJ IDEA.
     - The IDE will prompt you to set up the project and create .idea/ configuration files.
+
+---
+
+## **Collaborating with Git**
+
+### **Pulling Changes**
+To pull the latest changes from the repository:
+```bash
+git pull origin main
+```
+
+### **Pushing Changes**
+1. Stage your changes:
+```bash
+git add .
+```
+
+2. Commit your changes with a meaningful message:
+```bash
+git commit -m "Describe your changes here"
+```
+
+3. Push your changes to the remote repository:
+```bash 
+git push origin main
+```
+
