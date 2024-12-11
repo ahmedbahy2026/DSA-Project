@@ -1,18 +1,39 @@
-## Getting Started
+# **DSA Project: Memory Allocation and Data Structures**
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## **Project Overview**
+This project is a simulation of memory allocation and management combined with data structures. It demonstrates how memory is allocated to processes, managed, and reclaimed using key data structures like queues, linked lists, and priority queues.
 
-## Folder Structure
+## **Features**
+- **Memory Management**:
+  - Allocate memory blocks to processes.
+  - Manage a waiting list for processes when memory is unavailable.
+  - Reclaim and merge memory blocks after process completion.
+- **Data Structures**:
+  - Implementation of fundamental data structures:
+    - **Linked List**
+    - **Queue**
+    - **Priority Queue**
+- **Random Data Generation**:
+  - Generates random process sizes and timeouts.
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## **Project Structure**
+```plaintext
+dsa-project/
+├── src/
+│   ├── main/
+│   │   ├── datastructures/
+│   │   │   ├── linkedlist/
+│   │   │   │   └── LinkedList.java
+│   │   │   ├── queue/
+│   │   │   │   └── Queue.java
+│   │   │   ├── priorityqueue/
+│   │   │   │   └── PriorityQueue.java
+│   │   ├── memorymanagement/
+│   │   │   ├── MemBlock.java
+│   │   │   ├── Process.java
+│   │   │   └── MemAlloc.java
+│   │   ├── utils/
+│   │   │   └── RandomUtils.java
+│   │   └── Main.java
+├── README.md
+└── .gitignore
