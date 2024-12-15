@@ -5,8 +5,8 @@ public class MemBlock {
 	private int startAdd;
 	private int endAdd;
 	
-	public MemBlock(int size, int startAdd, int endAdd){
-		this.size = size;
+	public MemBlock(int startAdd, int endAdd){
+		this.size = endAdd - startAdd + 1;
 		this.startAdd = startAdd;
 		this.endAdd = endAdd;
 	}
@@ -23,6 +23,7 @@ public class MemBlock {
 	public int getEndAdd(){
 		return endAdd;
 	}
+  
 	
 	// setters
 	public void setSize(int size){
