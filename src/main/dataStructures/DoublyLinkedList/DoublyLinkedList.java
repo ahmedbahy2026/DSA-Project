@@ -13,6 +13,15 @@ public  class DoublyLinkedList<T> {
         this.tail = null;
         this.size = 0;
     }
+    
+
+    public Node<T> getHead(){
+        return head;
+    }
+
+    public Node<T> getTail(){
+        return tail;
+    }
 
     // Add a node to the end of the list
     public void insertLast(T data) {
