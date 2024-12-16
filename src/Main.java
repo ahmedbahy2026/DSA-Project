@@ -1,12 +1,23 @@
 
+import java.util.Random;
 import main.dataStructures.DoublyLinkedList.DoublyLinkedList;
 import main.dataStructures.DoublyLinkedList.Node;
-
 public class Main {
     public static void main(String[] args) throws Exception {
+
+
+
+        
         System.out.println("Hello, World!");
+        int size ,timeout ;
+        Random HamasRandom = new Random();
+        // genrate 20 process
+        for (int i =0 ;i<20 ;i++){
+            size = HamasRandom.nextInt(256);
+            timeout = HamasRandom.nextInt(20000 );
 
 
+        }
         // Create a doubly linked list
         DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
 

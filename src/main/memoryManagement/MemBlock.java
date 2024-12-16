@@ -1,19 +1,17 @@
 package main.memoryManagement;
 
 public class MemBlock {
-  private int size; 
 	private int startAdd;
 	private int endAdd;
 	
 	public MemBlock(int startAdd, int endAdd){
-		this.size = endAdd - startAdd + 1;
 		this.startAdd = startAdd;
 		this.endAdd = endAdd;
 	}
 	
 	// getters
 	public int getSize(){
-		return size;
+		return endAdd - startAdd +1 ;
 	}
 	
 	public int getStartAdd(){
@@ -25,10 +23,6 @@ public class MemBlock {
 	}
   
 	
-	// setters
-	public void setSize(int size){
-		this.size = size;
-	}
 	
 	public void setStartAdd(int startAdd){
 		this.startAdd = startAdd;

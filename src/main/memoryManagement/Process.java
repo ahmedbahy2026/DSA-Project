@@ -2,6 +2,8 @@ package main.memoryManagement;
 
 import java.util.Random;
 
+
+
 public class Process implements Comparable<Process>{
   static private int count = 0;
   private int size;
