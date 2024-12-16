@@ -32,9 +32,11 @@ public class MemBlock {
 	
 	public void setStartAdd(int startAdd){
 		this.startAdd = startAdd;
+		setSize(endAdd - startAdd);
 	}
 	
 	public void setEndAdd(int endAdd){
 		this.endAdd = endAdd;
+		setSize(endAdd - startAdd);
 	}
 }

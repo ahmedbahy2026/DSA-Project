@@ -7,7 +7,7 @@ public class Process implements Comparable<Process>{
   private int size;
 	private int id;
 	private int timeout;
-	private MemBlock memBlcok;
+	private MemBlock memBlock;
 	
 	
 	public Process(){
@@ -15,7 +15,7 @@ public class Process implements Comparable<Process>{
 		this.id = count++;
     this.size = random.nextInt(256) + 1;
 		this.timeout = random.nextInt(20000) + 1;
-		this.memBlcok = null;
+		this.memBlock = null;
 	}
 
   public String toString(){
@@ -23,7 +23,7 @@ public class Process implements Comparable<Process>{
   }
 
   public MemBlock getMemBlock(){
-    return memBlcok;
+    return memBlock;
   } 
 
   public int getTimeout(){
@@ -32,6 +32,14 @@ public class Process implements Comparable<Process>{
 
   public int getId(){
     return this.id;
+  }
+
+  public int getSize(){
+    return this.size;
+  }
+
+  public void setMemBlock(MemBlock block){
+    this.memBlock = block;
   }
 
   public void setTimeout(int timeout){

@@ -6,7 +6,6 @@ import main.dataStructures.DoublyLinkedList.Node;
 
 public class MemAlloc {
   private DoublyLinkedList<MemBlock> availableBlocks; 
-  // private Queue<Process> waitingList;
   private DoublyLinkedList<Process> waitingList;
   private PriorityQueue<Process> startingList;
   private DoublyLinkedList<Process> runningList;
@@ -21,15 +20,36 @@ public class MemAlloc {
     runningList = new DoublyLinkedList<>();
   }
 
-  private void alloc(Process process){
+  private void showLists(){
 
+  }
+
+  private boolean alloc(Process process){
+    int key = process.getSize();
+    MemBlock bestCandidate = null;
+    Node<MemBlock> current = availableBlocks.getHead();
+    while(current != null){
+      if(current.data.getSize() >= key && current.data.getSize() < bestCandidate.getSize())
+        bestCandidate = current.data;  // Found a better candidate (smaller block that fits the memory required)
+    }
+    // no sufficienct memory block found
+    if(bestCandidate == null)
+      return false;
+    // Assign the process beginning from the start address of the best candidate
+    MemBlock assignedBlock = new MemBlock(bestCandidate.getStartAdd(), bestCandidate.getStartAdd() + process.getSize());
+    bestCandidate.setStartAdd(assignedBlock.getEndAdd());
+    if(bestCandidate.getSize() == 0)
+      availableBlocks.remove(bestCandidate);
+    process.setMemBlock(assignedBlock);
+    runningList.insertLast(process);
+    return true;
   }
 
   private void free(Process process){
     Node<MemBlock> current = availableBlocks.getHead();
     
     while(current!=null){
-
+      // possible equality ??
       if(process.getMemBlock().getEndAdd() < current.data.getStartAdd()){
         // insert before current
         Node<MemBlock> newNode = new Node<MemBlock>(process.getMemBlock());
@@ -59,6 +79,7 @@ public class MemAlloc {
     Node<MemBlock> current = availableBlocks.getHead();
 
     while (current.next != null) {
+      // if(current.data.getEndAdd() == current.next.data.getStartAdd()) ??
       if(current.data.getEndAdd() == current.next.data.getStartAdd() - 1){
         current.data.setEndAdd(current.next.data.getEndAdd());
 
@@ -96,11 +117,15 @@ public class MemAlloc {
         // if(removed){
         //    remove from waiting
         // }
+        if(alloc(current.data))
+          waitingList.remove(current.data);
         current = current.next; 
       }
 
+      // Call the showLists method ??
+      showLists();
       // display the ended process form the "finishedProcessList"
-      Display(finishedPorcessList);
+      DisplayFinished(finishedPorcessList);
 
       try{
         Thread.sleep(1000);
@@ -110,7 +135,7 @@ public class MemAlloc {
     }
   }
 
-  private void Display(DoublyLinkedList<Process> list){
+  private void DisplayFinished(DoublyLinkedList<Process> list){
     Node<Process> current = list.getHead();
     while (current != null) {
       int id = current.data.getId();
@@ -127,7 +152,8 @@ public class MemAlloc {
     while(current != null) {
       if(current.data.getTimeout() <= 1000){
         // delete it
-        Process removed;
+        Process removed = current.data;  //Assignment??
+        removed.setTimeout(0); // setting the timeout to zero ??
         if(current == runningList.getHead()){ // delete first
           removed = runningList.removeFirst().data;
         }else if(current.next == null){
