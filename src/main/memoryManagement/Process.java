@@ -16,7 +16,7 @@ public class Process implements Comparable<Process>{
 		Random random = new Random();
 		this.id = count++;
     this.size = random.nextInt(256) + 1;
-		this.timeout = random.nextInt(20000) + 1;
+		this.timeout = random.nextInt(19000) + 1000;
 		this.memBlock = null;
 	}
 

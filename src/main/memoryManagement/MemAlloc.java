@@ -9,6 +9,7 @@ public class MemAlloc {
   private DoublyLinkedList<Process> waitingList;
   private PriorityQueue<Process> startingList;
   private DoublyLinkedList<Process> runningList;
+  static int currentTime;
 
   public MemAlloc(){
     availableBlocks = new DoublyLinkedList<>();
@@ -18,25 +19,52 @@ public class MemAlloc {
     waitingList = new DoublyLinkedList<>();
     startingList = new PriorityQueue<>();
     runningList = new DoublyLinkedList<>();
+    currentTime = 0;
   }
 
   private void showLists(){
+    System.out.println("At time " + currentTime);
+    System.out.println("Running:");
+    displayRunning();
+    System.out.println("Waiting:");
+    displayWaiting();
+    ++currentTime;
+  }
 
+  private void displayRunning(){
+    Node<Process> current = runningList.getHead();
+    while(current != null){
+      System.out.println("process " + current.data.getId() + " with size: " + current.data.getSize());
+      current = current.next;
+    }
+    System.out.println("----------------");
+  }
+
+  private void displayWaiting(){
+    Node<Process> current = waitingList.getHead();
+    while(current != null){
+      System.out.println("process " + current.data.getId() + " with size: " + current.data.getSize());
+      current = current.next;
+    }
+    System.out.println("----------------");
   }
 
   private boolean alloc(Process process){
     int key = process.getSize();
-    MemBlock bestCandidate = null;
+    MemBlock bestCandidate = availableBlocks.getHead().data;
+    if(bestCandidate == null) 
+      return false;
     Node<MemBlock> current = availableBlocks.getHead();
     while(current != null){
-      if(current.data.getSize() >= key && current.data.getSize() < bestCandidate.getSize())
+      if(current.data.getSize() >= key && (current.data.getSize() < bestCandidate.getSize() || bestCandidate.getSize() < key))
         bestCandidate = current.data;  // Found a better candidate (smaller block that fits the memory required)
+      current = current.next;
     }
     // no sufficienct memory block found
-    if(bestCandidate == null)
+    if(bestCandidate == availableBlocks.getHead().data && bestCandidate.getSize() < process.getSize())
       return false;
     // Assign the process beginning from the start address of the best candidate
-    MemBlock assignedBlock = new MemBlock(bestCandidate.getStartAdd(), bestCandidate.getStartAdd() + process.getSize());
+    MemBlock assignedBlock = new MemBlock(bestCandidate.getStartAdd(), bestCandidate.getStartAdd() + process.getSize() - 1);
     bestCandidate.setStartAdd(assignedBlock.getEndAdd());
     if(bestCandidate.getSize() == 0)
       availableBlocks.remove(bestCandidate);
@@ -50,7 +78,7 @@ public class MemAlloc {
     
     while(current!=null){
       // possible equality ??
-      if(process.getMemBlock().getEndAdd() < current.data.getStartAdd()){
+      if(process.getMemBlock().getEndAdd() <= current.data.getStartAdd()){
         // insert before current
         Node<MemBlock> newNode = new Node<MemBlock>(process.getMemBlock());
         // insert first
@@ -80,7 +108,7 @@ public class MemAlloc {
 
     while (current.next != null) {
       // if(current.data.getEndAdd() == current.next.data.getStartAdd()) ??
-      if(current.data.getEndAdd() == current.next.data.getStartAdd() - 1){
+      if(current.data.getEndAdd() == current.next.data.getStartAdd()){
         current.data.setEndAdd(current.next.data.getEndAdd());
 
         // if we try to remove the last --> we must modify "tail"
@@ -104,11 +132,17 @@ public class MemAlloc {
       startingList.push(new Process());
     }
 
-    while(!startingList.isEmpty()){
+    MemBlock initial = new MemBlock(0, 1023);
+    availableBlocks.insertFirst(initial);
+
+    while(!startingList.isEmpty() || !waitingList.isEmpty() || !runningList.isEmpty()){
       // check running [ decrease one second --> delete if finished ]
       DoublyLinkedList<Process> finishedPorcessList = modifyRunnigList();
+      // calling showlists so that at time 0, no process is running
+      showLists();
 
-      waitingList.insertLast(startingList.pop());
+      if(!startingList.isEmpty())
+        waitingList.insertLast(startingList.pop());
 
       Node<Process> current = waitingList.getHead();
 
@@ -117,15 +151,15 @@ public class MemAlloc {
         // if(removed){
         //    remove from waiting
         // }
-        if(alloc(current.data))
+        boolean allocated = alloc(current.data);
+        if(allocated)
           waitingList.remove(current.data);
         current = current.next; 
       }
 
-      // Call the showLists method ??
-      showLists();
       // display the ended process form the "finishedProcessList"
       DisplayFinished(finishedPorcessList);
+      System.out.println("----------------");
 
       try{
         Thread.sleep(1000);
@@ -168,6 +202,7 @@ public class MemAlloc {
       }else{
         current.data.setTimeout(current.data.getTimeout() - 1000);
       }
+      current = current.next;
     }
 
     return finishedPorcessList;
