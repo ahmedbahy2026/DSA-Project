@@ -11,7 +11,7 @@ public class MemBlock {
 	
 	// getters
 	public int getSize(){
-		return endAdd - startAdd;
+		return endAdd - startAdd + 1;
 	}
 	
 	public int getStartAdd(){

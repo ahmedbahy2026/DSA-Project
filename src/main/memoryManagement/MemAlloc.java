@@ -65,7 +65,7 @@ public class MemAlloc {
       return false;
     // Assign the process beginning from the start address of the best candidate
     MemBlock assignedBlock = new MemBlock(bestCandidate.getStartAdd(), bestCandidate.getStartAdd() + process.getSize() - 1);
-    bestCandidate.setStartAdd(assignedBlock.getEndAdd());
+    bestCandidate.setStartAdd(assignedBlock.getEndAdd() + 1);
     if(bestCandidate.getSize() == 0)
       availableBlocks.remove(bestCandidate);
     process.setMemBlock(assignedBlock);
@@ -108,7 +108,7 @@ public class MemAlloc {
 
     while (current.next != null) {
       // if(current.data.getEndAdd() == current.next.data.getStartAdd()) ??
-      if(current.data.getEndAdd() == current.next.data.getStartAdd()){
+      if(current.data.getEndAdd() == current.next.data.getStartAdd() + 1){
         current.data.setEndAdd(current.next.data.getEndAdd());
 
         // if we try to remove the last --> we must modify "tail"
@@ -186,8 +186,7 @@ public class MemAlloc {
     while(current != null) {
       if(current.data.getTimeout() <= 1000){
         // delete it
-        Process removed = current.data;  //Assignment??
-        removed.setTimeout(0); // setting the timeout to zero ??
+        Process removed;
         if(current == runningList.getHead()){ // delete first
           removed = runningList.removeFirst().data;
         }else if(current.next == null){
