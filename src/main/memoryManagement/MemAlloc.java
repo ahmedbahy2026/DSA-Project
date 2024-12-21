@@ -19,7 +19,7 @@ public class MemAlloc {
     waitingList = new DoublyLinkedList<>();
     startingList = new PriorityQueue<>();
     runningList = new DoublyLinkedList<>();
-    currentTime = 0;
+    currentTime = 1;
   }
 
   private void showLists(){
